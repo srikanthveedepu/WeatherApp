@@ -21,6 +21,8 @@ class NetworkLayer {
         }
         
         dictParams["appid"] = "fae7190d7e6433ec3a45285ffcf55c86"
+        dictParams["units"] = "metric"
+        
         var strParams = "?"
         for (index, (key, value)) in dictParams.enumerated() {
             

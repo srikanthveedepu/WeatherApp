@@ -122,7 +122,7 @@ class ShowForeCastViewController: UIViewController {
         
         let lblTemp = UILabel()
         lblTemp.textAlignment = .center
-        lblTemp.text = String(format: "%.1f C", (((dictToday["main"] as! [String: Any])["temp"] as! Double) - 273.15))
+        lblTemp.text = String(format: "%.1f C", (((dictToday["main"] as! [String: Any])["temp"] as! Double)))
         lblTemp.textColor = .black
         lblTemp.font = UIFont.customFont(name: AppFont.LATO_SEMIBOLD, size: .body)
         svMainView.addArrangedSubview(lblTemp)
@@ -157,7 +157,7 @@ class ShowForeCastViewController: UIViewController {
             
             let lblTemp = UILabel()
             lblTemp.textAlignment = .center
-            lblTemp.text = String(format: "%.1f C", (((dict1["main"] as! [String: Any])["temp"] as! Double) - 273.15))
+            lblTemp.text = String(format: "%.1f C", (((dict1["main"] as! [String: Any])["temp"] as! Double)))
             lblTemp.textColor = .black
             lblTemp.font = UIFont.customFont(name: AppFont.LATO_SEMIBOLD, size: .body)
             svNext.addArrangedSubview(lblTemp)
