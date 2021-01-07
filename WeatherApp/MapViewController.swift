@@ -1,9 +1,4 @@
-//
-//  MapViewController.swift
-//  WeatherApp
-//
-//  Created by Veedepu Srikanth on 06/01/21.
-//
+
 
 import UIKit
 import MapKit
@@ -19,8 +14,7 @@ class MapViewController: UIViewController {
     weak var delegate: MapViewControllerDelegate?
     let mapView = MKMapView()
     var annotation: MKPointAnnotation?
-    
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         

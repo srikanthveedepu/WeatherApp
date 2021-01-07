@@ -1,9 +1,3 @@
-//
-//  AppDelegate.swift
-//  WeatherApp
-//
-//  Created by Veedepu Srikanth on 06/01/21.
-//
 
 import UIKit
 

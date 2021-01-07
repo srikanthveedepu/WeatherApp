@@ -1,18 +1,16 @@
-//
-//  ShowForeCastViewController.swift
-//  WeatherApp
-//
-//  Created by Veedepu Srikanth on 06/01/21.
-//
+
 
 import UIKit
 
 class ShowForeCastViewController: UIViewController {
     
     let dictForecastInfo: [String: Any]
+    var arrDayWise = [[String: Any]]()
+    let cityName: String
     
-    init(_ forecastData: [String: Any]) {
+    init(_ forecastData: [String: Any], city: String) {
         self.dictForecastInfo = forecastData
+        self.cityName = city
         super.init(nibName: nil, bundle: nil)
         
         separateDataDayWise()
@@ -31,9 +29,7 @@ class ShowForeCastViewController: UIViewController {
     func separateDataDayWise() {
         
         guard let arrData = dictForecastInfo["list"] as? [[String: Any]] else { return }
-        
-        var arrDayWise = [[String: Any]]()
-        
+                
         for dict in arrData {
             
             guard let dateStr = dict["dt_txt"] as? String else { return }
@@ -57,7 +53,7 @@ class ShowForeCastViewController: UIViewController {
                 
                 filteredData[newStr] = arr1
                 print(filteredData)
-                arrDayWise.append(filteredData)
+                //arrDayWise.removeAll(where: {  })
             }
             else {
                 
@@ -68,15 +64,103 @@ class ShowForeCastViewController: UIViewController {
         }
         
         print(arrDayWise)
+        
+        displayData()
     }
     
     func displayData() {
         
-        let scrollViewMain = UIScrollView()
-        view.addSubview(scrollViewMain)
-        scrollViewMain.translatesAutoresizingMaskIntoConstraints = false
+        let dictData = arrDayWise[0]
+        guard let arrToday = dictData[dictData["name"] as! String] as? [[String: Any]] else { return }
+        
+        let dictToday = arrToday[0]
+        print(dictToday)
+        
+        let topView = UIView()
+        topView.backgroundColor = .white
+        view.addSubview(topView)
+        topView.translatesAutoresizingMaskIntoConstraints = false
         [
-            scrollViewMain.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
-        ]
+            topView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
+            topView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 0),
+            topView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 0),
+        ].forEach { $0.isActive = true }
+        
+        let svMainView = UIStackView()
+        svMainView.axis = .vertical
+        svMainView.alignment = .center
+        svMainView.spacing = 20
+        topView.addSubview(svMainView)
+        svMainView.translatesAutoresizingMaskIntoConstraints = false
+        [
+            svMainView.topAnchor.constraint(equalTo: topView.topAnchor, constant: 20),
+            svMainView.leftAnchor.constraint(equalTo: topView.leftAnchor, constant: 0),
+            svMainView.rightAnchor.constraint(equalTo: topView.rightAnchor, constant: 0),
+            svMainView.bottomAnchor.constraint(equalTo: topView.bottomAnchor, constant: -20)
+        ].forEach { $0.isActive = true }
+        
+        let lblCity = UILabel()
+        lblCity.textAlignment = .center
+        lblCity.text = self.cityName
+        lblCity.textColor = .black
+        lblCity.font = UIFont.customFont(name: AppFont.LATO_BOLD, size: .title2)
+        svMainView.addArrangedSubview(lblCity)
+        
+        let lblToday = UILabel()
+        lblToday.textAlignment = .center
+        lblToday.text = dictData["name"] as? String
+        lblToday.textColor = .black
+        lblToday.font = UIFont.customFont(name: AppFont.LATO_BOLD, size: .title2)
+        svMainView.addArrangedSubview(lblToday)
+        
+        let lblFeelLike = UILabel()
+        lblFeelLike.textAlignment = .center
+        lblFeelLike.text = (dictToday["weather"] as! [[String: Any]]) [0]["description"] as? String
+        lblFeelLike.textColor = .black
+        lblFeelLike.font = UIFont.customFont(name: AppFont.LATO_SEMIBOLD, size: .body)
+        svMainView.addArrangedSubview(lblFeelLike)
+        
+        let lblTemp = UILabel()
+        lblTemp.textAlignment = .center
+        lblTemp.text = String(format: "%.1f C", (((dictToday["main"] as! [String: Any])["temp"] as! Double) - 273.15))
+        lblTemp.textColor = .black
+        lblTemp.font = UIFont.customFont(name: AppFont.LATO_SEMIBOLD, size: .body)
+        svMainView.addArrangedSubview(lblTemp)
+        
+        for (index, dictNext) in arrDayWise.enumerated() {
+            
+            if index == 0 {
+                continue
+            }
+            
+            let svNext = UIStackView()
+            svNext.axis = .horizontal
+            svNext.spacing = 20
+            svNext.alignment = .center
+            svMainView.addArrangedSubview(svNext)
+            
+            let lblDate = UILabel()
+            //lblDate.textAlignment = .center
+            lblDate.text = dictNext["name"] as? String
+            lblDate.textColor = .black
+            lblDate.font = UIFont.customFont(name: AppFont.LATO_MEDIUM, size: .body)
+            svNext.addArrangedSubview(lblDate)
+            
+            let dict1 = (dictNext[dictNext["name"] as! String] as! [[String: Any]])[0]
+            
+            let lblFeelLike = UILabel()
+            lblFeelLike.textAlignment = .center
+            lblFeelLike.text = ( dict1["weather"] as! [[String: Any]]) [0]["description"] as? String
+            lblFeelLike.textColor = .black
+            lblFeelLike.font = UIFont.customFont(name: AppFont.LATO_SEMIBOLD, size: .body)
+            svNext.addArrangedSubview(lblFeelLike)
+            
+            let lblTemp = UILabel()
+            lblTemp.textAlignment = .center
+            lblTemp.text = String(format: "%.1f C", (((dict1["main"] as! [String: Any])["temp"] as! Double) - 273.15))
+            lblTemp.textColor = .black
+            lblTemp.font = UIFont.customFont(name: AppFont.LATO_SEMIBOLD, size: .body)
+            svNext.addArrangedSubview(lblTemp)
+        }
     }
 }

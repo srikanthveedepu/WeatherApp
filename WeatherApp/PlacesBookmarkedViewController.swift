@@ -1,9 +1,3 @@
-//
-//  PlacesBookmarkedViewController.swift
-//  WeatherApp
-//
-//  Created by Veedepu Srikanth on 06/01/21.
-//
 
 import UIKit
 import MapKit
@@ -76,7 +70,7 @@ class PlacesBookmarkedViewController: UITableViewController, UISearchResultsUpda
                     DispatchQueue.main.async {
                         tableView.deselectRow(at: indexPath, animated: true)
                         
-                        let showFCVC = ShowForeCastViewController(forecastData)
+                        let showFCVC = ShowForeCastViewController(forecastData, city: cityName)
                         self.navigationController?.pushViewController(showFCVC, animated: true)
                     }
                 }

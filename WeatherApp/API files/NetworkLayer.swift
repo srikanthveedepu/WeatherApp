@@ -1,9 +1,4 @@
-//
-//  NetworkLayer.swift
-//  WeatherApp
-//
-//  Created by Veedepu Srikanth on 06/01/21.
-//
+
 
 import Foundation
 
@@ -50,12 +45,7 @@ class NetworkLayer {
         URLSession.shared.dataTask(with: urlReq) { (data, response, error) in
             
             if error == nil {
-                
                 guard let data = data else { return }
-                
-//                let strJson = String.init(data: data, encoding: .utf8)!
-//                print("Output response: \(strJson)")
-                
                 completionHandler(.success(data))
             }
             else {
